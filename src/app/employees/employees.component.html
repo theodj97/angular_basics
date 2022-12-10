@@ -1,0 +1,216 @@
+<table>
+  <thead>
+    <td><strong>ID</strong></td>
+    <td><strong>Name</strong></td>
+    <td><strong>Age</strong></td>
+    <td><strong>Company</strong></td>
+    <td><strong>Working</strong></td>
+  </thead>
+  <tbody *ngFor="let employee of employees?.employeeList; index as i">
+    <tr>
+      <td>{{ employee.id }}</td>
+      <td>{{ employee.name }}</td>
+      <td>{{ employee.age }}</td>
+      <td>{{ employee.company.name }}</td>
+      <td>
+        <span *ngIf="employee.isWorking">✓</span>
+        <span *ngIf="!employee.isWorking">✗</span>
+      </td>
+      <td>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          (click)="deleteEmployee(employee)"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-trash3"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"
+          />
+        </svg>
+      </td>
+      <td>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          (click)="formUpdate(employee)"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-pencil"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"
+          />
+        </svg>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h1>Add an employee:</h1>
+<form [formGroup]="addEmployeeForm" (ngSubmit)="addEmployee()">
+  <label for="name">Name:</label>
+  <input
+    type="text"
+    id="name"
+    name="name"
+    formControlName="name"
+    [ngClass]="{
+      inputError: AEName?.touched && !AEName?.valid,
+      inputSuccess: AEName?.valid
+    }"
+  />
+  <div *ngIf="AEName?.touched && !AEName?.valid" class="errorText">
+    <p *ngIf="AEName?.errors?.['required']">Name is required.</p>
+    <p *ngIf="AEName?.errors?.['minlength']">
+      Name must be at least
+      {{ AEName?.errors?.['minlength'].requiredLength }}
+      characters long.
+    </p>
+    <p *ngIf="AEName?.errors?.['maxlength']">
+      Name can only be
+      {{ AEName?.errors?.['maxlength'].requiredLength }}
+      characters long.
+    </p>
+    <p *ngIf="AEName?.errors?.['pattern']">
+      First name must contain only letters.
+    </p>
+  </div>
+  <br />
+  <label for="age">Age:</label>
+  <input
+    type="number"
+    id="age"
+    name="age"
+    formControlName="age"
+    [ngClass]="{
+      inputError: AEAge?.touched && !AEAge?.valid,
+      inputSuccess: AEAge?.valid
+    }"
+  />
+  <div *ngIf="AEAge?.touched && !AEAge?.valid" class="errorText">
+    <p *ngIf="AEAge?.errors?.['required']">Age is required.</p>
+    <p *ngIf="AEAge?.errors?.['min']">
+      Minimun age is
+      {{ AEAge?.errors?.['min'].min }}.
+    </p>
+    <p *ngIf="AEAge?.errors?.['max']">
+      Maximun age is
+      {{ AEAge?.errors?.['max'].max }}.
+    </p>
+    <p *ngIf="AEAge?.errors?.['pattern']">Age must contain only numbers.</p>
+  </div>
+  <br />
+  <label for="company">Company:</label>
+  <select
+    formControlName="company"
+    [ngClass]="{
+      selectError: AECompany?.touched && !AECompany?.valid,
+      selectSuccess: AECompany?.valid
+    }"
+  >
+    <option *ngFor="let company of companies" [ngValue]="company">
+      {{ company.name }}
+    </option>
+  </select>
+  <div *ngIf="AECompany?.touched && !AECompany?.valid" class="errorText">
+    <p *ngIf="AECompany?.errors?.['required']">Company is required.</p>
+  </div>
+  <br />
+  <label for="isWorking">Working:</label>
+  <input
+    type="checkbox"
+    id="isWorking"
+    name="isWorking"
+    formControlName="isWorking"
+  />
+  <br />
+  <button type="submit" [disabled]="!addEmployeeForm.valid">Add</button>
+</form>
+
+<hr />
+<h1>Update an employee:</h1>
+<form [formGroup]="updateEmployeeForm" (ngSubmit)="updateEmployee()" *ngIf="updatingEmployee">
+  <label for="name">Name:</label>
+  <input
+    type="text"
+    id="name"
+    name="name"
+    formControlName="name"
+    [ngClass]="{
+      inputError: UEName?.touched && !UEName?.valid,
+      inputSuccess: UEName?.valid
+    }"
+  />
+  <div *ngIf="UEName?.touched && !UEName?.valid" class="errorText">
+    <p *ngIf="UEName?.errors?.['required']">Name is required.</p>
+    <p *ngIf="UEName?.errors?.['minlength']">
+      Name must be at least
+      {{ UEName?.errors?.['minlength'].requiredLength }}
+      characters long.
+    </p>
+    <p *ngIf="UEName?.errors?.['maxlength']">
+      Name can only be
+      {{ UEName?.errors?.['maxlength'].requiredLength }}
+      characters long.
+    </p>
+    <p *ngIf="UEName?.errors?.['pattern']">
+      First name must contain only letters.
+    </p>
+  </div>
+  <br />
+  <label for="age">Age:</label>
+  <input
+    type="number"
+    id="age"
+    name="age"
+    formControlName="age"
+    [ngClass]="{
+      inputError: UEAge?.touched && !UEAge?.valid,
+      inputSuccess: UEAge?.valid
+    }"
+  />
+  <div *ngIf="UEAge?.touched && !UEAge?.valid" class="errorText">
+    <p *ngIf="UEAge?.errors?.['required']">Age is required.</p>
+    <p *ngIf="UEAge?.errors?.['min']">
+      Minimun age is
+      {{ UEAge?.errors?.['min'].min }}.
+    </p>
+    <p *ngIf="UEAge?.errors?.['max']">
+      Maximun age is
+      {{ UEAge?.errors?.['max'].max }}.
+    </p>
+    <p *ngIf="UEAge?.errors?.['pattern']">Age must contain only numbers.</p>
+  </div>
+  <br />
+  <label for="company">Company:</label>
+  <select
+    formControlName="company"
+    [ngClass]="{
+      selectError: UECompany?.touched && !UECompany?.valid,
+      selectSuccess: UECompany?.valid
+    }"
+  >
+    <option *ngFor="let company of companies" [ngValue]="company">
+      {{ company.name }}
+    </option>
+  </select>
+  <div *ngIf="UECompany?.touched && !UECompany?.valid" class="errorText">
+    <p *ngIf="UECompany?.errors?.['required']">Company is required.</p>
+  </div>
+  <br />
+  <label for="isWorking">Working:</label>
+  <input
+    type="checkbox"
+    id="isWorking"
+    name="isWorking"
+    formControlName="isWorking"
+  />
+  <br />
+  <button type="submit" [disabled]="!updateEmployeeForm.valid">Update</button>
+</form>

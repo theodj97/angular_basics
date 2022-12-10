@@ -1,0 +1,46 @@
+table,
+th,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.errorText {
+    color: red;
+    font-weight: bold;
+}
+
+input.inputError {
+    border: 2px solid red;
+    -webkit-box-shadow: 0px 0px 35px -10px red;
+    -moz-box-shadow: 0px 0px 35px -10px red;
+    box-shadow: 0px 0px 35px -10px red;
+}
+
+input.inputSuccess {
+    border: 2px solid green;
+    -webkit-box-shadow: 0px 0px 35px -10px green;
+    -moz-box-shadow: 0px 0px 35px -10px green;
+    box-shadow: 0px 0px 35px -10px green;
+}
+
+select.selectError {
+    border: 2px solid red;
+    -webkit-box-shadow: 0px 0px 35px -10px red;
+    -moz-box-shadow: 0px 0px 35px -10px red;
+    box-shadow: 0px 0px 35px -10px red;
+}
+
+select.selectSuccess {
+    border: 2px solid green;
+    -webkit-box-shadow: 0px 0px 35px -10px green;
+    -moz-box-shadow: 0px 0px 35px -10px green;
+    box-shadow: 0px 0px 35px -10px green;
+}
+
+
+input,
+select,
+:focus-visible {
+    outline: inherit !important;
+}
