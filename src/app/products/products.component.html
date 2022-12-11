@@ -1,0 +1,25 @@
+<table>
+  <thead>
+    <td><strong>ID</strong></td>
+    <td><strong>Name</strong></td>
+    <td><strong>Price</strong></td>
+    <td><strong>Favourite</strong></td>
+  </thead>
+  <tbody *ngFor="let product of _products; index as i">
+    <tr>
+      <td>{{ product.id }}</td>
+      <td>{{ product.name }}</td>
+      <td>{{ product.price }}</td>
+      <td>
+        <i
+          class="bi"
+          (click)="setFavourite(product)"
+          [ngClass]="{
+            'bi-star': !product.isFavourite,
+            'bi-star-fill': product.isFavourite
+          }"
+        ></i>
+      </td>
+    </tr>
+  </tbody>
+</table>

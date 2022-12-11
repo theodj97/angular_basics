@@ -1,1 +1,11 @@
+<h1 class="text-center">Forms with FormControl</h1>
 <employees [employeeList]="employeesList"></employees>
+
+<hr />
+<h1 class="text-center">Property binding</h1>
+<companies></companies>
+
+<hr />
+<h1 class="text-center">Input-Output Events</h1>
+<products [productList]="productList" (favourites)="getFavs($event)"></products>
+{{ totalFavs }} products are favourites.
