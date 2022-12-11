@@ -7,7 +7,7 @@
     <td><strong>Working</strong></td>
   </thead>
   <tbody *ngFor="let employee of employees?.employeeList; index as i">
-    <tr>
+    <tr [ngStyle]="{'background-color': employee.isWorking ? '#9DFF72': 'white'}">
       <td>{{ employee.id }}</td>
       <td>{{ employee.name }}</td>
       <td>{{ employee.age }}</td>
@@ -26,7 +26,7 @@
   </tbody>
 </table>
 
-<hr />
+<br />
 
 <h3>Add an employee:</h3>
 <form [formGroup]="addEmployeeForm" (ngSubmit)="addEmployee()">
@@ -109,7 +109,7 @@
   <button type="submit" [disabled]="!addEmployeeForm.valid">Add</button>
 </form>
 
-<hr />
+<br />
 <h3>Update an employee:</h3>
 <form
   [formGroup]="updateEmployeeForm"

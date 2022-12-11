@@ -6,7 +6,7 @@
     <td><strong>Favourite</strong></td>
   </thead>
   <tbody *ngFor="let product of _products; index as i">
-    <tr>
+    <tr [ngStyle]="{'background-color': product.isFavourite ? '#FEFFAB': 'white'}">
       <td>{{ product.id }}</td>
       <td>{{ product.name }}</td>
       <td>{{ product.price }}</td>

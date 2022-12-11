@@ -1,1 +1,37 @@
-<p>companies works!</p>
+<h3>One-Way Binding (Template to TS)</h3>
+<table>
+  <thead>
+    <td><strong>ID</strong></td>
+    <td><strong>Name</strong></td>
+    <td><strong>Workers</strong></td>
+    <td><strong>Location</strong></td>
+  </thead>
+  <tbody *ngFor="let company of foundResult; index as i">
+    <tr>
+      <td>{{ company.id }}</td>
+      <td>{{ company.name }}</td>
+      <td>{{ company.workers }}</td>
+      <td>{{ company.location }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+  <input
+    type="text"
+    (input)="inputCompany($event)"
+    placeholder="Search for company name"
+  />
+</p>
+
+<h3>Two-Way binding (Banana in box [()] )</h3>
+<p>
+  <input
+    type="text"
+    [(ngModel)]="inputTwoWay"
+    placeholder="Introduce a company name"
+  />
+</p>
+<p>Company name introduced: {{ inputTwoWay }}</p>
+<button (click)="Uppercase()">Uppercase</button>
+<button (click)="Lowercase()">Lowercase</button>
