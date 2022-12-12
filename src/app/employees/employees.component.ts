@@ -1,17 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Employee } from '../models/Employee';
-import { Employees } from '../models/Employees';
+import { EmployeesService } from '../services/employees/employees.service';
 
 @Component({
   selector: 'employees',
   templateUrl: './employees.component.html',
   styleUrls: ['./employees.component.css'],
-  inputs: ['_employees'],
 })
-export class EmployeesComponent implements OnInit {
-  @Input('employeeList') _employees: Array<Employee> | undefined;
-  employees?: Employees;
+export class EmployeesComponent {
+  employeeList: Array<Employee>;
   updatingEmployee: boolean = false;
   private updatingEmployeeObj?: Employee;
 
@@ -87,25 +85,24 @@ export class EmployeesComponent implements OnInit {
     return this.updateEmployeeForm.get('isWorking');
   }
 
-  constructor() {}
-  ngOnInit(): void {
-    this.employees = new Employees(this._employees!);
+  constructor(private _employeeService: EmployeesService) {
+    this.employeeList = _employeeService.employeeList;
   }
 
   addEmployee() {
     let newEmployee = new Employee(
-      this.employees!.employeeList.length + 1,
+      this.employeeList.length + 1,
       this.AEName!.value!,
       Number(this.AEAge!.value!),
       { id: this.AECompany!.value!.id, name: this.AECompany!.value!.name },
       this.AEIsWorking!.value!
     );
-    this.employees!.addEmployee(newEmployee);
+    this._employeeService!.addEmployee(newEmployee);
     this.clearForm(this.addEmployeeForm);
   }
 
   deleteEmployee(employee: Employee) {
-    this.employees?.deleteEmployee(employee);
+    this._employeeService?.deleteEmployee(employee);
     this.clearForm(this.updateEmployeeForm);
     this.updatingEmployee = false;
   }
@@ -126,7 +123,7 @@ export class EmployeesComponent implements OnInit {
     this.updatingEmployeeObj!.age = Number(this.UEAge!.value!);
     this.updatingEmployeeObj!.company = this.UECompany!.value!;
     this.updatingEmployeeObj!.isWorking = this.UEIsWorking!.value!;
-    this.employees?.updateEmployee(this.updatingEmployeeObj!);
+    this._employeeService?.updateEmployee(this.updatingEmployeeObj!);
     this.updatingEmployee = false;
   }
 

@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { EmployeesComponent } from './employees/employees.component';
 import { CompaniesComponent } from './companies/companies.component';
 import { ProductsComponent } from './products/products.component';
+import { EmployeesService } from './services/employees/employees.service';
+import { CompaniesService } from './services/companies/companies.service';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,7 @@ import { ProductsComponent } from './products/products.component';
     ProductsComponent,
   ],
   imports: [BrowserModule, ReactiveFormsModule, FormsModule],
-  providers: [],
+  providers: [EmployeesService, CompaniesService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

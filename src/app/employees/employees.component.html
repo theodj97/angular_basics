@@ -6,7 +6,7 @@
     <td><strong>Company</strong></td>
     <td><strong>Working</strong></td>
   </thead>
-  <tbody *ngFor="let employee of employees?.employeeList; index as i">
+  <tbody *ngFor="let employee of employeeList; index as i">
     <tr [ngStyle]="{'background-color': employee.isWorking ? '#9DFF72': 'white'}">
       <td>{{ employee.id }}</td>
       <td>{{ employee.name }}</td>
