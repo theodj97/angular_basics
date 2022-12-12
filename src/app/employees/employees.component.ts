@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Company } from '../models/Company';
 import { Employee } from '../models/Employee';
+import { CompaniesService } from '../services/companies/companies.service';
 import { EmployeesService } from '../services/employees/employees.service';
 
 @Component({
@@ -9,15 +11,24 @@ import { EmployeesService } from '../services/employees/employees.service';
   styleUrls: ['./employees.component.css'],
 })
 export class EmployeesComponent {
+  constructor(
+    private _employeeService: EmployeesService,
+    private _companyService: CompaniesService
+  ) {
+    this.employeeList = _employeeService.employeeList;
+    this.companies = this._companyService.companiesList;
+  }
+
   employeeList: Array<Employee>;
+  companies: Array<Company> = [];
   updatingEmployee: boolean = false;
   private updatingEmployeeObj?: Employee;
 
-  companies = [
-    { id: 1, name: 'Google' },
-    { id: 2, name: 'Microsoft' },
-    { id: 3, name: 'Facebook' },
-  ];
+  // companies = [
+  //   { id: 1, name: 'Google' },
+  //   { id: 2, name: 'Microsoft' },
+  //   { id: 3, name: 'Facebook' },
+  // ];
 
   addEmployeeForm = new FormGroup({
     name: new FormControl('', [
@@ -32,7 +43,9 @@ export class EmployeesComponent {
       Validators.max(150),
       Validators.pattern('[0-9]+'),
     ]),
-    company: new FormControl(this.companies[3], [Validators.required]),
+    company: new FormControl(this.companies[this.companies.length + 1], [
+      Validators.required,
+    ]),
     isWorking: new FormControl(false),
   });
 
@@ -49,7 +62,9 @@ export class EmployeesComponent {
       Validators.max(150),
       Validators.pattern('[0-9]+'),
     ]),
-    company: new FormControl(this.companies[3], [Validators.required]),
+    company: new FormControl(this.companies[this.companies.length + 1], [
+      Validators.required,
+    ]),
     isWorking: new FormControl(false),
   });
 
@@ -85,16 +100,12 @@ export class EmployeesComponent {
     return this.updateEmployeeForm.get('isWorking');
   }
 
-  constructor(private _employeeService: EmployeesService) {
-    this.employeeList = _employeeService.employeeList;
-  }
-
   addEmployee() {
     let newEmployee = new Employee(
       this.employeeList.length + 1,
       this.AEName!.value!,
       Number(this.AEAge!.value!),
-      { id: this.AECompany!.value!.id, name: this.AECompany!.value!.name },
+      this.companies.find((c) => c.id === this.AECompany?.value?.id)!,
       this.AEIsWorking!.value!
     );
     this._employeeService!.addEmployee(newEmployee);

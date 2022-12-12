@@ -1,9 +1,11 @@
+import { Company } from './Company';
+
 export class Employee {
   constructor(
     private _id: number,
     private _name: string,
     private _age: number,
-    private _company: { id: number; name: string },
+    private _company: Company,
     private _isWorking: boolean
   ) {}
 
